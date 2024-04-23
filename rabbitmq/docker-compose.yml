@@ -1,0 +1,22 @@
+name: rabbitmq
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: my-rabbit
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: 123456
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    
+    volumes:
+      - ./data:/var/lib/rabbitmq
+      # before uncommenting the following lines: 
+      #   1. copy the plugins and enabled_plugins files from the rabbitmq container
+      #   2. then put third-party plugins in the plugins folder
+      #   3. update the enabled_plugins file to include the third-party plugins
+      - ./plugins:/opt/rabbitmq/plugins
+      - ./enabled_plugins:/etc/rabbitmq/enabled_plugins
