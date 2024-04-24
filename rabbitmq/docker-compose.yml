@@ -3,6 +3,7 @@ name: rabbitmq
 services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
     hostname: my-rabbit
     environment:
       RABBITMQ_DEFAULT_USER: root
@@ -10,13 +11,12 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    restart: always
-    
     volumes:
       - ./data:/var/lib/rabbitmq
-      # before uncommenting the following lines: 
-      #   1. copy the plugins and enabled_plugins files from the rabbitmq container
-      #   2. then put third-party plugins in the plugins folder
-      #   3. update the enabled_plugins file to include the third-party plugins
+      # If you want to use third party plugins(like rabbitmq_delayed_message_exchange), please follow the steps below:
+      #   1. comment below lines and docker-compose up once
+      #   2. docker cp rabbitmq:/opt/rabbitmq/plugins ./plugins && docker cp rabbitmq:/etc/rabbitmq/enabled_plugins ./enabled_plugins
+      #   3. then put third party plugins in the plugins folder
+      #   4. update the enabled_plugins file to include the third party plugins
       - ./plugins:/opt/rabbitmq/plugins
       - ./enabled_plugins:/etc/rabbitmq/enabled_plugins
